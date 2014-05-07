@@ -47,4 +47,12 @@ public class MethodInfo {
         return new MethodInfo(owner, name, signature);
     }
 
+    @Override
+    public String toString() {
+        return "MethodInfo{" +
+                "owner='" + owner + '\'' +
+                ", name='" + name + '\'' +
+                ", signature='" + signature + '\'' +
+                '}';
+    }
 }
