@@ -1,6 +1,7 @@
 package net.cazzar.util.glowingoctowookie;
 
 import net.cazzar.util.glowingoctowookie.internal.MethodInfo;
+import net.cazzar.util.glowingoctowookie.internal.UserProgressListener;
 import net.cazzar.util.glowingoctowookie.util.JarParser;
 
 import java.io.File;
@@ -17,7 +18,7 @@ public class Main {
 //        byte[] bytes = Files.toByteArray(new File(args[1]));
 
         new File("out.jar").createNewFile();
-        JarParser.parseJar(new File(args[1]), new File("out.jar"));
+        JarParser.parseJar(new File(args[1]), new File("out.jar"), new UserProgressListener());
 //        FileOutputStream fileOutputStream = new FileOutputStream("out.class");
 //        fileOutputStream.write(SrgDeobfMapper.remap(bytes));
     }
