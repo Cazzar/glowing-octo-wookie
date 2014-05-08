@@ -26,15 +26,16 @@ public class FieldInfo {
 
         FieldInfo fieldInfo = (FieldInfo) o;
 
-        return name.equals(fieldInfo.name) && owner.equals(fieldInfo.owner);
+        return name.equals(fieldInfo.name);// && owner.equals(fieldInfo.owner);
 
     }
 
     @Override
     public int hashCode() {
-        int result = owner.hashCode();
-        result = 31 * result + name.hashCode();
-        return result;
+//        int result = owner.hashCode();
+//        result = 31 * result + name.hashCode();
+//        return result;
+        return name.hashCode();
     }
 
     public static FieldInfo get(String notation) {

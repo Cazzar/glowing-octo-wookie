@@ -28,15 +28,14 @@ public class MethodInfo {
 
         MethodInfo that = (MethodInfo) o;
 
-        return name.equals(that.name) && owner.equals(that.owner) && signature.equals(that.signature);
+        return name.equals(that.name);// && owner.equals(that.owner) && signature.equals(that.signature);
     }
 
     @Override
     public int hashCode() {
-        int result = owner.hashCode();
-        result = 31 * result + name.hashCode();
-        result = 31 * result + signature.hashCode();
-        return result;
+        //        result = 31 * result + name.hashCode();
+//        result = 31 * result + signature.hashCode();
+        return name.hashCode();
     }
 
     public static MethodInfo get(String notation, String signature) {

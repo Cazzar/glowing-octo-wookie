@@ -47,7 +47,6 @@ public class JarParser {
 
             outZip.closeEntry();
             listener.itemCompleted();
-            System.out.printf("Percentage completed: %.2f%n", listener.getProgress());
         }
 
         outZip.finish();

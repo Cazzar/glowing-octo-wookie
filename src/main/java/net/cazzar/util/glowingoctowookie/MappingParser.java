@@ -42,21 +42,20 @@ public class MappingParser {
         }
     }
 
-    public Map.Entry<MethodInfo, MethodInfo> findMethod(String name, String desc) {
-        for (Map.Entry<MethodInfo, MethodInfo> entry : methods.entrySet()) {
-            if (entry.getKey().getName().equals(name)) return entry;
-            if (entry.getValue().getName().equals(name)) return entry;
-        }
-
-        return null;
+    public MethodInfo findMethod(String owner, String name, String desc) {
+//        for (Map.Entry<MethodInfo, MethodInfo> entry : methods.entrySet()) {
+//            if (entry.getKey().getName().equals(name)) return entry;
+//            if (entry.getValue().getName().equals(name)) return entry;
+//        }
+        return methods.inverse().get(new MethodInfo(owner, name, desc));
     }
-    public Map.Entry<FieldInfo, FieldInfo> findField(String name) {
-        for (Map.Entry<FieldInfo, FieldInfo> entry : fields.entrySet()) {
-            if (entry.getKey().getName().equals(name)) return entry;
-            if (entry.getValue().getName().equals(name)) return entry;
-        }
+    public FieldInfo findField(String owner, String name) {
+//        for (Map.Entry<FieldInfo, FieldInfo> entry : fields.entrySet()) {
+//            if (entry.getKey().getName().equals(name)) return entry;
+//            if (entry.getValue().getName().equals(name)) return entry;
+//        }
 
-        return null;
+        return fields.inverse().get(new FieldInfo(owner, name));
     }
 
     public HashBiMap<String, String> getClasses() {

@@ -120,16 +120,31 @@ public class GuiMain extends JFrame {
 
                     Main.setConfig(new File(txtForge.getText()));
 
-                    JarParser.parseJar(in, out, new UserProgressListener() {
+                    Runnable r = new Runnable() {
                         @Override
-                        public void itemCompleted() {
-                            super.itemCompleted();
+                        public void run() {
+                            try {
+                                JarParser.parseJar(in, out, new UserProgressListener() {
+                                    @Override
+                                    public void itemCompleted() {
+                                        super.itemCompleted();
 
-                            synchronized (GuiMain.this.progressBar) {
-                                progressBar.setValue((int) Math.round(getProgress()));
+                                        synchronized (GuiMain.this.progressBar) {
+                                            progressBar.setValue((int) Math.round(getProgress()));
+                                        }
+                                    }
+                                });
+                            } catch (IOException e1) {
+                                JOptionPane.showMessageDialog(GuiMain.this, "There was an error in deobf");
+                                return;
                             }
+
+                            JOptionPane.showMessageDialog(GuiMain.this, "Done!");
                         }
-                    });
+                    };
+
+                    new Thread(r).start();
+
                 } catch (IOException e1) {
                     JOptionPane.showMessageDialog(GuiMain.this, "There was a error creating the output file.");
                 }
