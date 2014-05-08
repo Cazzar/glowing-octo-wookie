@@ -6,9 +6,7 @@ import net.cazzar.util.glowingoctowookie.internal.MethodInfo;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.tree.*;
-import org.objectweb.asm.util.CheckClassAdapter;
 
-import java.io.PrintWriter;
 import java.util.ListIterator;
 import java.util.Map;
 
@@ -37,16 +35,27 @@ public class SrgDeobfMapper {
                     MethodInsnNode insn = (MethodInsnNode) insnNode;
 
                     MethodInfo info = new MethodInfo(insn.owner, insn.name, insn.desc);
-                    System.out.println(info);
-                    System.out.printf("desc = %s, name = %s, owner = %s", insn.desc, insn.name, insn.owner);
+//                    System.out.println(info);
+//                    System.out.printf("desc = %s, name = %s, owner = %s", insn.desc, insn.name, insn.owner);
                     if (methods.containsKey(info)) {
                         info = methods.get(info);
-                        System.out.println(info);
+//                        System.out.println(info);
 
                         insn.desc = info.getSignature();
                         insn.name = info.getName();
                         insn.owner = info.getOwner();
-                        System.out.printf("desc = %s, name = %s, owner = %s", insn.desc, insn.name, insn.owner);
+//                        System.out.printf("desc = %s, name = %s, owner = %s", insn.desc, insn.name, insn.owner);
+                    }
+                    insnList.add(insn);
+                } else if (insnNode instanceof FieldInsnNode) {
+                    FieldInsnNode insn = (FieldInsnNode) insnNode;
+                    FieldInfo info = new FieldInfo(insn.owner, insn.name);
+
+                    if (fields.containsKey(info)) {
+                        info = fields.get(info);
+
+                        insn.name = info.getName();
+                        insn.owner = info.getOwner();
                     }
                     insnList.add(insn);
                 }
@@ -60,7 +69,7 @@ public class SrgDeobfMapper {
         ClassWriter writer = new ClassWriter(ClassWriter.COMPUTE_MAXS | ClassWriter.COMPUTE_FRAMES);
         node.accept(writer);
 
-        CheckClassAdapter.verify(reader, true, new PrintWriter(System.err));
+//        CheckClassAdapter.verify(reader, true, new PrintWriter(System.err));
 
         return writer.toByteArray();
     }
