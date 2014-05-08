@@ -6,7 +6,9 @@ import net.cazzar.util.glowingoctowookie.internal.MethodInfo;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.tree.*;
+import org.objectweb.asm.util.CheckClassAdapter;
 
+import java.io.PrintWriter;
 import java.util.ListIterator;
 import java.util.Map;
 
@@ -34,26 +36,20 @@ public class SrgDeobfMapper {
                 if (insnNode instanceof MethodInsnNode) {
                     MethodInsnNode insn = (MethodInsnNode) insnNode;
 
-                    MethodInfo info = new MethodInfo(insn.owner, insn.name, insn.desc);
-//                    System.out.println(info);
-//                    System.out.printf("desc = %s, name = %s, owner = %s", insn.desc, insn.name, insn.owner);
-                    if (methods.containsKey(info)) {
-                        info = methods.get(info);
-//                        System.out.println(info);
-
+                    Map.Entry<MethodInfo, MethodInfo> infoEntry = MappingParser.getInstance().findMethod(insn.name, insn.desc);
+                    MethodInfo info = (infoEntry == null) ? null : infoEntry.getKey();
+                    if (info != null) {
                         insn.desc = info.getSignature();
                         insn.name = info.getName();
                         insn.owner = info.getOwner();
-//                        System.out.printf("desc = %s, name = %s, owner = %s", insn.desc, insn.name, insn.owner);
                     }
                     insnList.add(insn);
                 } else if (insnNode instanceof FieldInsnNode) {
                     FieldInsnNode insn = (FieldInsnNode) insnNode;
-                    FieldInfo info = new FieldInfo(insn.owner, insn.name);
+                    Map.Entry<FieldInfo, FieldInfo> field = MappingParser.getInstance().findField(insn.name);
+                    FieldInfo info = (field == null) ? null : field.getKey();
 
-                    if (fields.containsKey(info)) {
-                        info = fields.get(info);
-
+                    if (info != null) {
                         insn.name = info.getName();
                         insn.owner = info.getOwner();
                     }
@@ -63,13 +59,20 @@ public class SrgDeobfMapper {
                     insnList.add(insnNode);
                 }
             }
+
+            Map.Entry<MethodInfo, MethodInfo> method1 = MappingParser.getInstance().findMethod(method.name, method.signature);
+            if (method1 != null) {
+                method.name = method1.getKey().getName();
+                method.desc = method1.getKey().getSignature();
+            }
+
             method.instructions = insnList;
         }
 
         ClassWriter writer = new ClassWriter(ClassWriter.COMPUTE_MAXS | ClassWriter.COMPUTE_FRAMES);
         node.accept(writer);
 
-//        CheckClassAdapter.verify(reader, true, new PrintWriter(System.err));
+        CheckClassAdapter.verify(reader, true, new PrintWriter(System.err));
 
         return writer.toByteArray();
     }

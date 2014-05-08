@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
+import java.util.Map;
 
 public class MappingParser {
     private static MappingParser ourInstance = new MappingParser();
@@ -39,6 +40,23 @@ public class MappingParser {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public Map.Entry<MethodInfo, MethodInfo> findMethod(String name, String desc) {
+        for (Map.Entry<MethodInfo, MethodInfo> entry : methods.entrySet()) {
+            if (entry.getKey().getName().equals(name)) return entry;
+            if (entry.getValue().getName().equals(name)) return entry;
+        }
+
+        return null;
+    }
+    public Map.Entry<FieldInfo, FieldInfo> findField(String name) {
+        for (Map.Entry<FieldInfo, FieldInfo> entry : fields.entrySet()) {
+            if (entry.getKey().getName().equals(name)) return entry;
+            if (entry.getValue().getName().equals(name)) return entry;
+        }
+
+        return null;
     }
 
     public HashBiMap<String, String> getClasses() {
