@@ -27,6 +27,10 @@ public class Main {
         return config;
     }
 
+    public static void setConfig(File config) {
+        Main.config = config;
+    }
+
     public static MethodInfo searchMap(Map<MethodInfo, MethodInfo> map, String name) {
         for (MethodInfo info : map.keySet()){
             if (info.getName().equals(name)) return info;
