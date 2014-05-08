@@ -6,9 +6,7 @@ import net.cazzar.util.glowingoctowookie.internal.MethodInfo;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.tree.*;
-import org.objectweb.asm.util.CheckClassAdapter;
 
-import java.io.PrintWriter;
 import java.util.ListIterator;
 import java.util.Map;
 
@@ -69,10 +67,10 @@ public class SrgDeobfMapper {
             method.instructions = insnList;
         }
 
-        ClassWriter writer = new ClassWriter(ClassWriter.COMPUTE_MAXS | ClassWriter.COMPUTE_FRAMES);
+        ClassWriter writer = new ClassWriter(0);
         node.accept(writer);
 
-        CheckClassAdapter.verify(reader, true, new PrintWriter(System.err));
+        //CheckClassAdapter.verify(reader, true, new PrintWriter(System.err));
 
         return writer.toByteArray();
     }
