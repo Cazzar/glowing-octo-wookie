@@ -1,12 +1,10 @@
 package net.cazzar.util.glowingoctowookie.internal;
 
-import com.sun.istack.internal.NotNull;
-
-public class FieldInfo {  
+public class FieldInfo {
     private final String owner;
     private final String name;
 
-    public FieldInfo(@NotNull String owner, @NotNull String name) {
+    public FieldInfo(String owner, String name) {
         this.owner = owner;
         this.name = name;
     }
